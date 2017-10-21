@@ -8,6 +8,7 @@ from sklearn.naive_bayes import BernoulliNB
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
+from stemming.porter2 import stem
 import pickle
 #function to remove the html tags, punctuation marks, removing stopwords and returning the clean review
 def clean_review(raw_review):
@@ -23,8 +24,12 @@ def clean_review(raw_review):
 	stops = set(stopwords.words("english"))
 	#removing stopwords
 	useable_words = [w for w in words if not w in stops]
+	#stemming the review.
+	stemmed_words=[stem(word) for word in useable_words]
 	#joining words back to get the clean review string and returning it
-	return " ".join(useable_words)
+	return " ".join(stemmed_words)
+
+
 filename = 'finalized_model.sav'
 # load the model from disk
 classifier = BernoulliNB()
